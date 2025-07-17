@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { ThemeContext } from '../App';
 
 const PortfolioBuilder = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const PortfolioBuilder = () => {
   const [imageError, setImageError] = useState('');
   const [parsingMethod, setParsingMethod] = useState('');
   const [loading, setLoading] = useState(true); // Loader state
+  const { theme } = useContext(ThemeContext);
 
   // Removed parseResumeText and all fallback/manual parsing logic
 
@@ -879,7 +881,7 @@ const PortfolioBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 overflow-x-hidden">
+    <div className={`min-h-screen overflow-x-hidden ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900' : 'bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50'}`}>
       <Toaster position="top-center" />
       <div className="max-w-6xl mx-auto p-6 overflow-x-hidden w-full">
         {/* Header */}
@@ -961,7 +963,7 @@ const PortfolioBuilder = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-4 sm:p-8 md:p-12 overflow-x-hidden w-full max-w-full"
+          className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border p-4 sm:p-8 md:p-12 overflow-x-hidden w-full max-w-full ${theme === 'dark' ? 'bg-gray-800/80 border-gray-700/60 text-white' : 'border-white/20'}`}
         >
           <AnimatePresence mode="wait">
             {renderStep()}

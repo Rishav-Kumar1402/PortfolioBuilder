@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker?url';
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+import { ThemeContext } from '../App';
 
 const ResumeUpload = () => {
   const [file, setFile] = useState(null);
@@ -14,6 +15,7 @@ const ResumeUpload = () => {
   const [parsingStatus, setParsingStatus] = useState('');
   const navigate = useNavigate();
   const API_KEY = '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';
+  const { theme } = useContext(ThemeContext);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -232,16 +234,16 @@ Important:
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-violet-900 py-10">
-      <div className="w-full max-w-xl mx-auto bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 sm:p-12 border border-gray-100 dark:border-gray-700  mt-[50px]">
+    <div className={`min-h-screen flex items-center justify-center py-10 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
+      <div className={`w-full max-w-xl mx-auto rounded-3xl shadow-2xl p-8 sm:p-12 border mt-[50px] ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
         <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">Upload Your Resume</h2>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">Start building your portfolio by uploading your resume in PDF format.</p>
+          <h2 className={`text-3xl sm:text-4xl font-extrabold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Upload Your Resume</h2>
+          <p className={`text-base sm:text-lg mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Start building your portfolio by uploading your resume in PDF format.</p>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">Maximum file size: 5MB</p>
         </div>
         <div
           className={`transition-all duration-300 border-2 rounded-2xl p-8 text-center cursor-pointer flex flex-col items-center justify-center ${
-            isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/40'
+            isDragging ? (theme === 'dark' ? 'border-blue-500 bg-blue-900/30' : 'border-blue-500 bg-blue-50') : `border-dashed ${theme === 'dark' ? 'border-gray-600 bg-gray-900/40' : 'border-gray-300 bg-gray-50'}`
           } hover:shadow-lg focus-within:shadow-xl`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -255,9 +257,9 @@ Important:
                 <rect x="16" y="36" width="16" height="4" rx="2" fill="#a78bfa" />
               </svg>
             </div>
-            <p className="mt-2 text-base sm:text-lg text-gray-700 dark:text-gray-200 font-medium">Drag & drop your PDF resume here</p>
+            <p className={`mt-2 text-base sm:text-lg font-medium ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Drag & drop your PDF resume here</p>
             <span className="text-gray-400 text-xs">or</span>
-            <label className="inline-block px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-md hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 cursor-pointer">
+            <label className={`inline-block px-6 py-2 rounded-lg font-semibold shadow-md transition-all duration-300 cursor-pointer ${theme === 'dark' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-500 hover:to-indigo-500' : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-500 hover:to-indigo-500'}`}>
               Browse Files
               <input
                 type="file"
@@ -268,12 +270,12 @@ Important:
               />
             </label>
             {file && (
-              <div className="flex items-center justify-center mt-4 space-x-2 bg-purple-50 dark:bg-purple-900/30 px-4 py-2 rounded-lg shadow-inner">
+              <div className={`flex items-center justify-center mt-4 space-x-2 px-4 py-2 rounded-lg shadow-inner ${theme === 'dark' ? 'bg-purple-900/30' : 'bg-purple-50'}`}>
                 <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M14 2v6h6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{file.name}</span>
+                <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>{file.name}</span>
                 <span className="text-xs text-gray-400">({(file.size / 1024 / 1024).toFixed(2)}MB)</span>
               </div>
             )}

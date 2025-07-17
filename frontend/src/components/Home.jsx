@@ -71,13 +71,13 @@ const Home = () => {
     <div className={`w-full min-h-screen overflow-x-hidden ${theme === 'dark' ? 'text-white bg-gray-900' : 'text-gray-900 bg-white'}`}>
       <Toaster position="top-center" />
       {/* Hero Section with Carousel */}
-      <section className="relative max-w-screen overflow-x-hidden">
+      <section className="relative">
         <HeroCarousel onGetStarted={handleGetStarted} />
       </section>
 
       {/* About Section */}
-      <section id="about" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800' : 'bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-50'} max-w-screen overflow-x-hidden`}>
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-screen overflow-x-hidden">
+      <section id="about" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800' : 'bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-50'}`}>
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent animate-gradient">
             About Our Platform
           </h2>
@@ -139,8 +139,8 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-12 sm:py-16 md:py-20 max-w-screen overflow-x-hidden">
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-screen overflow-x-hidden">
+      <section id="features" className="py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
             Powerful Features
           </h2>
@@ -181,25 +181,25 @@ const Home = () => {
       </section>
 
       {/* Reviews Section */}
-      <section id="reviews" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} max-w-screen overflow-x-hidden`}>
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-screen overflow-x-hidden">
+      <section id="reviews" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
             What Our Users Say
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                name: 'John Doe',
+                name: 'Shilpa Gupta',
                 role: 'Software Engineer',
                 content: 'The best portfolio builder I\'ve ever used. Simple and effective.'
               },
               {
-                name: 'Jane Smith',
+                name: 'Rittik Bhadani',
                 role: 'UX Designer',
                 content: 'Created my portfolio in minutes. Absolutely love it!'
               },
               {
-                name: 'Mike Johnson',
+                name: 'Ritwik Raj',
                 role: 'Product Manager',
                 content: 'Professional looking portfolio with minimal effort. Highly recommended!'
               }
@@ -221,8 +221,8 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800' : 'bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-50'} max-w-screen overflow-x-hidden`}>
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-screen overflow-x-hidden">
+      <section id="contact" className={`py-12 sm:py-16 md:py-20 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800' : 'bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-50'}`}>
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent animate-gradient">
             Get In Touch
           </h2>
@@ -332,8 +332,8 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className={`py-8 sm:py-12 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'} max-w-screen overflow-x-hidden`}>
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 max-w-screen overflow-x-hidden">
+      <footer className={`py-8 sm:py-12 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="container mx-auto px-3 sm:px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             <div className="space-y-2 sm:space-y-4">
               <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
