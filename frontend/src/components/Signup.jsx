@@ -14,7 +14,7 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { isDarkMode } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const validateForm = () => {
     const newErrors = {};
@@ -105,23 +105,23 @@ const Signup = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 ${isDarkMode ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900' : 'bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100'}`}>
+    <div className={`min-h-screen flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900' : 'bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100'}`}>
       <Toaster position="top-center" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`max-w-md w-full space-y-6 sm:space-y-8 p-6 sm:p-8 rounded-xl shadow-2xl backdrop-blur-sm ${isDarkMode ? 'bg-gray-800/30 hover:bg-gray-800/40' : 'bg-white/30 hover:bg-white/40'} transition-all duration-300 border ${isDarkMode ? 'border-gray-700/50' : 'border-gray-200/50'}`}
+        className={`max-w-md w-full space-y-6 sm:space-y-8 p-6 sm:p-8 rounded-xl shadow-2xl backdrop-blur-sm ${theme === 'dark' ? 'bg-gray-800/30 hover:bg-gray-800/40' : 'bg-white/30 hover:bg-white/40'} transition-all duration-300 border ${theme === 'dark' ? 'border-gray-700/50' : 'border-gray-200/50'}`}
       >
         <div>
-          <h2 className={`mt-4 sm:mt-6 text-center text-2xl sm:text-3xl font-extrabold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          <h2 className={`mt-4 sm:mt-6 text-center text-2xl sm:text-3xl font-extrabold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Create your account
           </h2>
         </div>
         <form className="mt-6 sm:mt-8 space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="name" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              <label htmlFor="name" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
                 Full Name
               </label>
               <input
@@ -131,14 +131,14 @@ const Signup = () => {
                 autoComplete="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`appearance-none relative block w-full px-4 py-3 border ${errors.name ? 'border-red-300' : isDarkMode ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isDarkMode ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
+                className={`appearance-none relative block w-full px-4 py-3 border ${errors.name ? 'border-red-300' : theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${theme === 'dark' ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
                 placeholder="Enter your full name"
               />
               {errors.name && <p className="mt-2 text-sm text-red-400">{errors.name}</p>}
             </div>
 
             <div>
-              <label htmlFor="email" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              <label htmlFor="email" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
                 Email address
               </label>
               <input
@@ -148,14 +148,14 @@ const Signup = () => {
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`appearance-none relative block w-full px-4 py-3 border ${errors.email ? 'border-red-300' : isDarkMode ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isDarkMode ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
+                className={`appearance-none relative block w-full px-4 py-3 border ${errors.email ? 'border-red-300' : theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${theme === 'dark' ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
                 placeholder="Enter your email"
               />
               {errors.email && <p className="mt-2 text-sm text-red-400">{errors.email}</p>}
             </div>
 
             <div>
-              <label htmlFor="password" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              <label htmlFor="password" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
                 Password
               </label>
               <input
@@ -165,14 +165,14 @@ const Signup = () => {
                 autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`appearance-none relative block w-full px-4 py-3 border ${errors.password ? 'border-red-300' : isDarkMode ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isDarkMode ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
+                className={`appearance-none relative block w-full px-4 py-3 border ${errors.password ? 'border-red-300' : theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${theme === 'dark' ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
                 placeholder="Enter your password"
               />
               {errors.password && <p className="mt-2 text-sm text-red-400">{errors.password}</p>}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              <label htmlFor="confirmPassword" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>
                 Confirm Password
               </label>
               <input
@@ -182,7 +182,7 @@ const Signup = () => {
                 autoComplete="new-password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`appearance-none relative block w-full px-4 py-3 border ${errors.confirmPassword ? 'border-red-300' : isDarkMode ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isDarkMode ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
+                className={`appearance-none relative block w-full px-4 py-3 border ${errors.confirmPassword ? 'border-red-300' : theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${theme === 'dark' ? 'bg-gray-700/50 text-white' : 'bg-white/50 text-gray-900'} transition-all duration-300 hover:shadow-lg`}
                 placeholder="Confirm your password"
               />
               {errors.confirmPassword && <p className="mt-2 text-sm text-red-400">{errors.confirmPassword}</p>}
@@ -201,20 +201,20 @@ const Signup = () => {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isLoading}
-              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white ${isDarkMode ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:shadow-xl backdrop-blur-sm`}
+              className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white ${theme === 'dark' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:shadow-xl backdrop-blur-sm`}
             >
               {isLoading ? 'Creating account...' : 'Sign up'}
             </motion.button>
           </div>
 
           <div className="text-center">
-            <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
               Already have an account?{' '}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 type="button"
                 onClick={() => navigate('/login')}
-                className={`font-medium ${isDarkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-500'}`}
+                className={`font-medium ${theme === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-500'}`}
               >
                 Sign in
               </motion.button>
