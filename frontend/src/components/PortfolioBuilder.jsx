@@ -41,7 +41,7 @@ const PortfolioBuilder = () => {
 
   const saveToDatabase = async (data) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/save-portfolio', data);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/save-portfolio`, data);
       if (response.data.success) {
         return response.data.data;
       } else {
@@ -55,7 +55,7 @@ const PortfolioBuilder = () => {
 
   const fetchFromDatabase = async (email) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/get-portfolio/${email}`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/get-portfolio/${email}`);
       if (response.data.success) {
         return response.data.data;
       } else {
@@ -212,7 +212,7 @@ const PortfolioBuilder = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/save-portfolio', formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/save-portfolio`, formData);
       if (response.data.success) {
         toast.success('Portfolio updated successfully!');
         setIsUpdated(true);
