@@ -12,7 +12,7 @@ const PortfolioPreview = () => {
   const [portfolioHtml, setPortfolioHtml] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const { portfolioData } = location.state || {};
-  const API_KEY = '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';
+  const API_KEY = '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';
   const hasGenerated = useRef(false);
   const generatingRef = useRef(false);
 
