@@ -2,7 +2,6 @@ const completionsService = require('../services/completionsService');
 
 const getCompletions = async (req, res) => {
   try {
-    console.log("requests0",req)
     const { prompt, model, messages, extraHeaders } = req.body;
     if (!prompt && !messages) {
       return res.status(400).json({

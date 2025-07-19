@@ -8,7 +8,6 @@ class CompletionsService {
 
 
   async getCompletions({ prompt, model = 'deepseek/deepseek-r1:free', messages, extraHeaders = {} }) {
-    console.log("api",this.apiKey)
     if (!this.apiKey) {
       throw new Error('OpenRouter API key not configured');
     }
