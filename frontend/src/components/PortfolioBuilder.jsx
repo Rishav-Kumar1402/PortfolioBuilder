@@ -70,16 +70,39 @@ const PortfolioBuilder = () => {
   useEffect(() => {
     const processResumeData = async () => {
       setLoading(true);
+      console.log("============",location.state?.parsedData)
       if (location.state?.parsedData) {
         try {
           // Use the AI-parsed data directly from frontend
           const parsedData = location.state.parsedData;
           setParsingMethod('ai');
-            setFormData(parsedData);
-            try {
-              await saveToDatabase(parsedData);
-            } catch (error) {
-              console.error('Error saving to database:', error);
+          // Normalize the parsedData to ensure all fields exist and are the correct type
+          const normalized = {
+            name: parsedData.name || '',
+            email: parsedData.email || '',
+            phone: parsedData.phone || '',
+            portfolioLinks: {
+              portfolioWebsite: parsedData.portfolioLinks?.portfolioWebsite || '',
+              linkedin: parsedData.portfolioLinks?.linkedin || '',
+              github: parsedData.portfolioLinks?.github || '',
+              leetcode: parsedData.portfolioLinks?.leetcode || '',
+              hackerrank: parsedData.portfolioLinks?.hackerrank || ''
+            },
+            workExperience: Array.isArray(parsedData.workExperience) ? parsedData.workExperience : [],
+            projects: Array.isArray(parsedData.projects) ? parsedData.projects : [],
+            education: Array.isArray(parsedData.education) ? parsedData.education : [],
+            skills: {
+              languages: Array.isArray(parsedData.skills?.languages) ? parsedData.skills.languages : [],
+              tools: Array.isArray(parsedData.skills?.tools) ? parsedData.skills.tools : []
+            },
+            certifications: Array.isArray(parsedData.certifications) ? parsedData.certifications : [],
+            profileImage: parsedData.profileImage || null
+          };
+          setFormData(normalized);
+          try {
+            await saveToDatabase(normalized);
+          } catch (error) {
+            console.error('Error saving to database:', error);
           }
         } catch (error) {
           console.error('Error processing resume data:', error);
@@ -99,6 +122,8 @@ const PortfolioBuilder = () => {
     };
     processResumeData();
   }, [location.state]);
+
+  console.log("formData",formData)
 
   const handlePersonalInfoChange = (e) => {
     const { name, value } = e.target;
@@ -267,6 +292,8 @@ const PortfolioBuilder = () => {
   ];
 
   const renderStep = () => {
+    console.log("formData.name",formData.name)
+    console.log("formData",formData.email)
     switch (currentStep) {
       case 1:
         return (
@@ -311,7 +338,7 @@ const PortfolioBuilder = () => {
                 transition={{ delay: 0.1 }}
                 className="group"
               >
-                <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                   Full Name
                 </label>
                 <input
@@ -319,7 +346,7 @@ const PortfolioBuilder = () => {
                   name="name"
                   value={formData.name}
                   onChange={handlePersonalInfoChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
+                  className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700/50 text-white placeholder-gray-400' : 'bg-white text-gray-900'}`}
                   placeholder="Enter your full name"
                 />
               </motion.div>
@@ -330,7 +357,7 @@ const PortfolioBuilder = () => {
                 transition={{ delay: 0.2 }}
                 className="group"
               >
-                <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                   Email Address
                 </label>
                 <input
@@ -338,7 +365,7 @@ const PortfolioBuilder = () => {
                   name="email"
                   value={formData.email}
                   onChange={handlePersonalInfoChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
+                  className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700/50 text-white placeholder-gray-400' : 'bg-white text-gray-900'}`}
                   placeholder="your.email@example.com"
                 />
               </motion.div>
@@ -349,7 +376,7 @@ const PortfolioBuilder = () => {
                 transition={{ delay: 0.3 }}
                 className="group md:col-span-2"
               >
-                <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                   Phone Number
                 </label>
                 <input
@@ -357,7 +384,7 @@ const PortfolioBuilder = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handlePersonalInfoChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
+                  className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700/50 text-white placeholder-gray-400' : 'bg-white text-gray-900'}`}
                   placeholder="+91 9898989898"
                 />
               </motion.div>
@@ -399,7 +426,7 @@ const PortfolioBuilder = () => {
                   transition={{ delay: index * 0.1 }}
                   className="group"
                 >
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
+                  <label className={`block text-sm font-semibold mb-2 group-hover:text-blue-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                     <span className="mr-2">{link.icon}</span>
                     {link.label}
                   </label>
@@ -407,7 +434,7 @@ const PortfolioBuilder = () => {
                     type="url"
                     value={formData.portfolioLinks[link.key]}
                     onChange={(e) => handlePortfolioLinksChange(link.key, e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 bg-white shadow-sm hover:shadow-md"
+                    className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700/50 text-white placeholder-gray-400' : 'bg-white text-gray-900'}`}
                     placeholder={link.placeholder}
                   />
                 </motion.div>
@@ -442,53 +469,57 @@ const PortfolioBuilder = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-r from-green-50 to-teal-50 p-6 rounded-2xl border border-green-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-green-900 via-teal-900 to-gray-900 border-green-800'
+                      : 'bg-gradient-to-r from-green-50 to-teal-50 border-green-100'
+                  }`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-green-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-green-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Company
                       </label>
                       <input
                         type="text"
                         value={exp.company}
                         onChange={(e) => updateExperience(index, 'company', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-green-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-green-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-green-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Position
                       </label>
                       <input
                         type="text"
                         value={exp.position}
                         onChange={(e) => updateExperience(index, 'position', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-green-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-green-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-green-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Duration
                       </label>
                       <input
                         type="text"
                         value={exp.duration}
                         onChange={(e) => updateExperience(index, 'duration', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-green-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="2020 - Present"
                       />
                     </div>
                   </div>
                   <div className="group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-green-600 transition-colors">
+                    <label className={`block text-sm font-semibold mb-2 group-hover:text-green-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                       Description
                     </label>
                     <textarea
                       value={exp.description}
                       onChange={(e) => updateExperience(index, 'description', e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-white resize-none"
+                      className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-green-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       placeholder="Describe your role and achievements..."
                     />
                   </div>
@@ -537,22 +568,26 @@ const PortfolioBuilder = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-purple-900 via-pink-900 to-gray-900 border-purple-800'
+                      : 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100'
+                  }`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Project Name
                       </label>
                       <input
                         type="text"
                         value={project.title}
                         onChange={(e) => updateProject(index, 'title', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-purple-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Tech Stack
                       </label>
                       <input
@@ -563,44 +598,44 @@ const PortfolioBuilder = () => {
                           newProjects[index] = { ...project, techStack: e.target.value.split(',').map(tech => tech.trim()) };
                           setFormData(prev => ({ ...prev, projects: newProjects }));
                         }}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-purple-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="React, Node.js, MongoDB"
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         GitHub Link
                       </label>
                       <input
                         type="url"
                         value={project.github}
                         onChange={(e) => updateProject(index, 'github', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-purple-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="https://github.com/username/project"
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Live Demo
                       </label>
                       <input
                         type="url"
                         value={project.liveDemo}
                         onChange={(e) => updateProject(index, 'liveDemo', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-purple-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="https://your-project.com"
                       />
                     </div>
                   </div>
                   <div className="group">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-purple-600 transition-colors">
+                    <label className={`block text-sm font-semibold mb-2 group-hover:text-purple-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                       Description
                     </label>
                     <textarea
                       value={project.description}
                       onChange={(e) => updateProject(index, 'description', e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 bg-white resize-none"
+                      className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-purple-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       placeholder="Describe your project..."
                     />
                   </div>
@@ -649,52 +684,56 @@ const PortfolioBuilder = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-2xl border border-yellow-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-yellow-900 via-orange-900 to-gray-900 border-yellow-800'
+                      : 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-100'
+                  }`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-yellow-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-yellow-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Degree
                       </label>
                       <input
                         type="text"
                         value={edu.degree}
                         onChange={(e) => updateEducation(index, 'degree', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-yellow-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-yellow-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-yellow-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Institution
                       </label>
                       <input
                         type="text"
                         value={edu.institution}
                         onChange={(e) => updateEducation(index, 'institution', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-yellow-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-yellow-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-yellow-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Duration
                       </label>
                       <input
                         type="text"
                         value={edu.duration}
                         onChange={(e) => updateEducation(index, 'duration', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-yellow-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="2018 - 2022"
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-yellow-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-yellow-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Score/GPA
                       </label>
                       <input
                         type="text"
                         value={edu.score}
                         onChange={(e) => updateEducation(index, 'score', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-yellow-500 focus:ring-4 focus:ring-yellow-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-yellow-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="3.8/4.0"
                       />
                     </div>
@@ -739,9 +778,13 @@ const PortfolioBuilder = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-md transition-all duration-300"
+                className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-indigo-900 via-blue-900 to-gray-900 border-indigo-800'
+                    : 'bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-100'
+                }`}
               >
-                <label className="block text-sm font-semibold text-gray-700 mb-4 group-hover:text-indigo-600 transition-colors">
+                <label className={`block text-sm font-semibold mb-4 group-hover:text-indigo-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                   <span className="mr-2">💻</span>
                   Programming Languages
                 </label>
@@ -749,7 +792,7 @@ const PortfolioBuilder = () => {
                   value={formData.skills.languages.join(', ')}
                   onChange={(e) => handleSkillsChange('languages', e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 bg-white resize-none"
+                  className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-indigo-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                   placeholder="JavaScript, Python, Java, C++, HTML, CSS..."
                 />
               </motion.div>
@@ -758,9 +801,13 @@ const PortfolioBuilder = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-2xl border border-blue-100 shadow-sm hover:shadow-md transition-all duration-300"
+                className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-blue-900 via-cyan-900 to-gray-900 border-blue-800'
+                    : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-100'
+                }`}
               >
-                <label className="block text-sm font-semibold text-gray-700 mb-4 group-hover:text-blue-600 transition-colors">
+                <label className={`block text-sm font-semibold mb-4 group-hover:text-blue-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                   <span className="mr-2">🛠️</span>
                   Tools & Technologies
                 </label>
@@ -768,7 +815,7 @@ const PortfolioBuilder = () => {
                   value={formData.skills.tools.join(', ')}
                   onChange={(e) => handleSkillsChange('tools', e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 bg-white resize-none"
+                  className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-blue-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                   placeholder="React, Node.js, Git, Docker, AWS, VS Code..."
                 />
               </motion.div>
@@ -802,53 +849,57 @@ const PortfolioBuilder = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-r from-red-50 to-pink-50 p-6 rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  className={`p-6 rounded-2xl border shadow-sm hover:shadow-md transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-red-900 via-pink-900 to-gray-900 border-red-800'
+                      : 'bg-gradient-to-r from-red-50 to-pink-50 border-red-100'
+                  }`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-red-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-red-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Certification Title
                       </label>
                       <input
                         type="text"
                         value={cert.title}
                         onChange={(e) => updateCertification(index, 'title', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-red-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-red-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-red-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Year
                       </label>
                       <input
                         type="text"
                         value={cert.year}
                         onChange={(e) => updateCertification(index, 'year', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-red-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="2023"
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-red-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-red-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Provider
                       </label>
                       <input
                         type="text"
                         value={cert.provider}
                         onChange={(e) => updateCertification(index, 'provider', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-red-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="Coursera, Udemy, AWS..."
                       />
                     </div>
                     <div className="group">
-                      <label className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-red-600 transition-colors">
+                      <label className={`block text-sm font-semibold mb-2 group-hover:text-red-600 transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
                         Certificate Link
                       </label>
                       <input
                         type="url"
                         value={cert.certificateLink}
                         onChange={(e) => updateCertification(index, 'certificateLink', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 bg-white"
+                        className={`w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-900 border-red-700 text-white placeholder-gray-400' : 'bg-white border-gray-200 text-gray-900'}`}
                         placeholder="https://certificate-link.com"
                       />
                     </div>
@@ -963,7 +1014,7 @@ const PortfolioBuilder = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border p-4 sm:p-8 md:p-12 overflow-x-hidden w-full max-w-full ${theme === 'dark' ? 'bg-gray-800/80 border-gray-700/60 text-white' : 'border-white/20'}`}
+          className={`rounded-3xl shadow-xl border p-4 sm:p-8 md:p-12 overflow-x-hidden w-full max-w-full ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white/80 border-white/20'}`}
         >
           <AnimatePresence mode="wait">
             {renderStep()}
