@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    proxy: {
+      '/api': 'https://portfoliobuilder-tovo.onrender.com', // <-- Add this line
+    },
     allowedHosts: ['6b80438f2c7b.ngrok-free.app'],
   },
 })

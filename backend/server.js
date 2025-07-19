@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const portfolioRoutes = require('./routes/portfolio');
 const testRoutes = require('./routes/testRoutes');
+const completionsRoutes = require('./routes/completionsRoutes');
 const { protect } = require('./middleware/authMiddleware');
 const contactRoute = require('./routes/contact');
 
@@ -34,6 +35,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', resumeRoutes);
 app.use('/api', portfolioRoutes);
 app.use('/api/test', testRoutes);
+app.use('/api', completionsRoutes);
 
 // Protected routes example
 app.use('/api/portfolio', protect, require('./routes/portfolioRoutes'));

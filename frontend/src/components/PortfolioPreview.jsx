@@ -12,7 +12,6 @@ const PortfolioPreview = () => {
   const [portfolioHtml, setPortfolioHtml] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const { portfolioData } = location.state || {};
-  const API_KEY = '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';
   const hasGenerated = useRef(false);
   const generatingRef = useRef(false);
 
@@ -192,7 +191,7 @@ Ensure every section is styled as per the design specs and that no data is omitt
 
 `;
         const response = await axios.post(
-          'https://openrouter.ai/api/v1/chat/completions',
+          '/api/completions',
           {
             model: 'deepseek/deepseek-r1:free',
             messages: [
@@ -205,20 +204,10 @@ Ensure every section is styled as per the design specs and that no data is omitt
                 content: prompt
               }
             ]
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${API_KEY}`,
-              'HTTP-Referer': window.location.origin,
-              'X-Title': 'Portfolio Builder',
-              'Content-Type': 'application/json'
-            }
           }
         );
-        console.log("response",response)
-
-        if (response.data.choices && response.data.choices[0]) {
-          setPortfolioHtml(cleanGeneratedHtml(response.data.choices[0].message.content));
+        if (response.data && response.data.data) {
+          setPortfolioHtml(cleanGeneratedHtml(response.data.data));
           hasGenerated.current = true;
         } else {
           throw new Error('Invalid response from API');
@@ -303,10 +292,10 @@ To run this website locally, simply open the index.html file in your web browser
           <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
           <p className="text-red-500">{error}</p>
           <button
-            onClick={() => navigate('/builder')}
+            onClick={() => navigate('/')}
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            Back to Builder
+            Back to Home
           </button>
         </motion.div>
       </div>
@@ -341,13 +330,11 @@ To run this website locally, simply open the index.html file in your web browser
                 backgroundColor: 'white'
               }}
               onLoad={(e) => {
-                console.log('Iframe loaded');
                 // Try to access iframe content to debug
                 try {
                   const iframe = e.target;
                   const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                  console.log('Iframe document:', iframeDoc);
-                  
+       
                   // Force white background on iframe content
                   if (iframeDoc && iframeDoc.body) {
                     iframeDoc.body.style.backgroundColor = 'white';
@@ -363,7 +350,7 @@ To run this website locally, simply open the index.html file in your web browser
           <div className="flex-grow flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-600 mb-2">No Portfolio Generated</h2>
-              <p className="text-gray-500">Please go back to the builder and try again.</p>
+              <p className="text-gray-500">Please go back to the home page and try again.</p>
             </div>
           </div>
         )}
@@ -378,10 +365,10 @@ To run this website locally, simply open the index.html file in your web browser
           Download Code
         </button>
         <button
-          onClick={() => navigate('/builder')}
+          onClick={() => navigate('/')}
           className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
         >
-          Back to Builder
+          Back to Home
         </button>
       </div>
     </div>

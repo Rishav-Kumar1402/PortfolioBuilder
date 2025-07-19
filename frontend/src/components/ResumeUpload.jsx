@@ -14,7 +14,6 @@ const ResumeUpload = () => {
   const [error, setError] = useState('');
   const [parsingStatus, setParsingStatus] = useState('');
   const navigate = useNavigate();
-  const API_KEY = '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';
   const { theme } = useContext(ThemeContext);
 
   const handleDragOver = useCallback((e) => {
@@ -84,70 +83,69 @@ const ResumeUpload = () => {
     try {
       const prompt = `Please parse the following resume text and extract structured information. Return the data in the exact JSON format specified below.
 
-Resume Text:
-${resumeText}
-
-Please extract and return the following information in this exact JSON format:
-{
-  "name": "Full Name",
-  "email": "email@example.com",
-  "phone": "phone number",
-  "portfolioLinks": {
-    "portfolioWebsite": "https://portfolio-website.com",
-    "linkedin": "https://linkedin.com/in/username",
-    "github": "https://github.com/username",
-    "leetcode": "https://leetcode.com/username",
-    "hackerrank": "https://hackerrank.com/username"
-  },
-  "workExperience": [
-    {
-      "company": "Company Name",
-      "position": "Job Title",
-      "duration": "Duration (e.g., 2020 - Present)",
-      "description": "Job description and achievements"
-    }
-  ],
-  "projects": [
-    {
-      "title": "Project Name",
-      "techStack": ["Technology1", "Technology2"],
-      "description": "Project description",
-      "github": "https://github.com/username/project",
-      "liveDemo": "https://project-demo.com"
-    }
-  ],
-  "education": [
-    {
-      "degree": "Degree Name",
-      "institution": "Institution Name",
-      "duration": "Duration (e.g., 2018 - 2022)",
-      "score": "GPA or Score"
-    }
-  ],
-  "skills": {
-    "languages": ["Language1", "Language2"],
-    "tools": ["Tool1", "Tool2"]
-  },
-  "certifications": [
-    {
-      "title": "Certification Name",
-      "year": "Year",
-      "provider": "Provider Name",
-      "certificateLink": "https://certificate-link.com"
-    }
-  ]
-}
-
-Important:
-1. Extract all available information from the resume
-2. If any field is not found, use empty string or empty array
-3. For skills, separate programming languages and tools/technologies
-4. For portfolio links, extract URLs if available
-5. For work experience and projects, extract as much detail as possible
-6. Return only valid JSON, no additional text or explanations`;
-
+      Resume Text:
+      ${resumeText}
+      
+      Please extract and return the following information in this exact JSON format:
+      {
+        "name": "Full Name",
+        "email": "email@example.com",
+        "phone": "phone number",
+        "portfolioLinks": {
+          "portfolioWebsite": "https://portfolio-website.com",
+          "linkedin": "https://linkedin.com/in/username",
+          "github": "https://github.com/username",
+          "leetcode": "https://leetcode.com/username",
+          "hackerrank": "https://hackerrank.com/username"
+        },
+        "workExperience": [
+          {
+            "company": "Company Name",
+            "position": "Job Title",
+            "duration": "Duration (e.g., 2020 - Present)",
+            "description": "Job description and achievements"
+          }
+        ],
+        "projects": [
+          {
+            "title": "Project Name",
+            "techStack": ["Technology1", "Technology2"],
+            "description": "Project description",
+            "github": "https://github.com/username/project",
+            "liveDemo": "https://project-demo.com"
+          }
+        ],
+        "education": [
+          {
+            "degree": "Degree Name",
+            "institution": "Institution Name",
+            "duration": "Duration (e.g., 2018 - 2022)",
+            "score": "GPA or Score"
+          }
+        ],
+        "skills": {
+          "languages": ["Language1", "Language2"],
+          "tools": ["Tool1", "Tool2"]
+        },
+        "certifications": [
+          {
+            "title": "Certification Name",
+            "year": "Year",
+            "provider": "Provider Name",
+            "certificateLink": "https://certificate-link.com"
+          }
+        ]
+      }
+      
+      Important:
+      1. Extract all available information from the resume
+      2. If any field is not found, use empty string or empty array
+      3. For skills, separate programming languages and tools/technologies
+      4. For portfolio links, extract URLs if available
+      5. For work experience and projects, extract as much detail as possible
+      6. Return only valid JSON, no additional text or explanations`;
       const response = await axios.post(
-        'https://openrouter.ai/api/v1/chat/completions',
+        '/api/completions',
         {
           model: 'deepseek/deepseek-r1:free',
           messages: [
@@ -160,29 +158,17 @@ Important:
               content: prompt
             }
           ]
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${API_KEY}`,
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'Portfolio Builder',
-            'Content-Type': 'application/json'
-          }
         }
       );
-      console.log("response",response.data);
-
-      if (response.data.choices && response.data.choices[0]) {
-        const aiResponse = response.data.choices[0].message.content;
-        
+      if (response?.data && response?.data?.data) {
+        const aiResponse = response?.data.data;
         // Extract JSON from the response
         const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
         if (!jsonMatch) {
           throw new Error('No valid JSON found in AI response');
         }
-
         const parsedData = JSON.parse(jsonMatch[0]);
-        return parsedData;
+       return parsedData;
       } else {
         throw new Error('Invalid response from AI API');
       }
