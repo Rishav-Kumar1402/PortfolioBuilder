@@ -33,7 +33,7 @@ DEEPSEEK_API_KEY=your_deepseek_api_key_here
 
 # Other required variables
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/portfolio-builder
+MONGODB_URI=your mongodb url
 JWT_SECRET=your_jwt_secret
 ```
 
