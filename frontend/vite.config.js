@@ -6,7 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:5000', // <-- Add this line
+      '/api': {
+        target: process.env.NODE_ENV === 'production' 
+          ? 'https://portfoliobuilder-tovo.onrender.com'
+          : 'http://localhost:5000',
+        changeOrigin: true,
+      }
     },
     allowedHosts: ['6b80438f2c7b.ngrok-free.app'],
   },
