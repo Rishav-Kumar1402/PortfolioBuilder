@@ -70,7 +70,6 @@ const PortfolioBuilder = () => {
   useEffect(() => {
     const processResumeData = async () => {
       setLoading(true);
-      console.log("============",location.state?.parsedData)
       if (location.state?.parsedData) {
         try {
           // Use the AI-parsed data directly from frontend
@@ -123,7 +122,6 @@ const PortfolioBuilder = () => {
     processResumeData();
   }, [location.state]);
 
-  console.log("formData",formData)
 
   const handlePersonalInfoChange = (e) => {
     const { name, value } = e.target;
@@ -292,8 +290,6 @@ const PortfolioBuilder = () => {
   ];
 
   const renderStep = () => {
-    console.log("formData.name",formData.name)
-    console.log("formData",formData.email)
     switch (currentStep) {
       case 1:
         return (

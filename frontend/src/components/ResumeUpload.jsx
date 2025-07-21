@@ -145,7 +145,7 @@ const ResumeUpload = () => {
       5. For work experience and projects, extract as much detail as possible
       6. Return only valid JSON, no additional text or explanations`;
       const response = await axios.post(
-        '/api/completions',
+        `${import.meta.env.VITE_API_URL}/api/completions`,
         {
           model: 'deepseek/deepseek-r1:free',
           messages: [

@@ -16,51 +16,51 @@ const PortfolioPreview = () => {
   const generatingRef = useRef(false);
 
   // Function to clean up generated HTML and remove problematic CSS
-  const cleanGeneratedHtml = (html) => {
-    if (!html) return html;
+  // const cleanGeneratedHtml = (html) => {
+  //   if (!html) return html;
     
-    // Remove any full-screen overlays or problematic background colors
-    let cleanedHtml = html;
+  //   // Remove any full-screen overlays or problematic background colors
+  //   let cleanedHtml = html;
     
-    // Replace any full-screen dark backgrounds
-    cleanedHtml = cleanedHtml.replace(
-      /background:\s*#1e3a8a|background:\s*#1e40af|background:\s*#1d4ed8|background:\s*#2563eb|background:\s*#3b82f6/gi,
-      'background: transparent'
-    );
+  //   // Replace any full-screen dark backgrounds
+  //   cleanedHtml = cleanedHtml.replace(
+  //     /background:\s*#1e3a8a|background:\s*#1e40af|background:\s*#1d4ed8|background:\s*#2563eb|background:\s*#3b82f6/gi,
+  //     'background: transparent'
+  //   );
     
-    // Replace any body/html full-screen dark backgrounds
-    cleanedHtml = cleanedHtml.replace(
-      /body\s*{[^}]*background[^}]*}/gi,
-      'body { margin: 0; padding: 0; font-family: Arial, sans-serif; }'
-    );
+  //   // Replace any body/html full-screen dark backgrounds
+  //   cleanedHtml = cleanedHtml.replace(
+  //     /body\s*{[^}]*background[^}]*}/gi,
+  //     'body { margin: 0; padding: 0; font-family: Arial, sans-serif; }'
+  //   );
     
-    // Remove any fixed positioned overlays
-    cleanedHtml = cleanedHtml.replace(
-      /position:\s*fixed[^}]*background[^}]*#1e3a8a[^}]*}/gi,
-      ''
-    );
+  //   // Remove any fixed positioned overlays
+  //   cleanedHtml = cleanedHtml.replace(
+  //     /position:\s*fixed[^}]*background[^}]*#1e3a8a[^}]*}/gi,
+  //     ''
+  //   );
     
-    // Ensure the portfolio content is visible
-    cleanedHtml = cleanedHtml.replace(
-      /<style>/,
-      `<style>
-        body { 
-          margin: 0; 
-          padding: 0; 
-          font-family: Arial, sans-serif; 
-          background: white !important;
-          color: black !important;
-        }
-        * { box-sizing: border-box; }
-        .portfolio-container { 
-          background: white !important; 
-          min-height: 100vh;
-        }
-      `
-    );
+  //   // Ensure the portfolio content is visible
+  //   cleanedHtml = cleanedHtml.replace(
+  //     /<style>/,
+  //     `<style>
+  //       body { 
+  //         margin: 0; 
+  //         padding: 0; 
+  //         font-family: Arial, sans-serif; 
+  //         background: white !important;
+  //         color: black !important;
+  //       }
+  //       * { box-sizing: border-box; }
+  //       .portfolio-container { 
+  //         background: white !important; 
+  //         min-height: 100vh;
+  //       }
+  //     `
+  //   );
     
-    return cleanedHtml;
-  };
+  //   return cleanedHtml;
+  // };
 
   useEffect(() => {
     const generatePortfolio = async () => {
@@ -77,52 +77,11 @@ You are a professional front-end developer. Your task is to create a fully respo
 
 ---
 
-### Personal Information:
-Name: ${portfolioData.name}  
-Email: ${portfolioData.email}  
-Phone: ${portfolioData.phone}  
-
-${portfolioData.profileImage ? `### Profile Image (Base64):\n${portfolioData.profileImage.substring(0, 100)}... (truncated)\n\nUse this image as the user's avatar or profile picture in the portfolio.\n` : ''}
-
-### Portfolio Links:
-${Object.entries(portfolioData.portfolioLinks).map(([key, value]) => `${key}: ${value}`).join(' | ')}
-
-### Work Experience:
-${portfolioData.workExperience.map((exp, i) => 
-`${i + 1}) ${exp.position} at ${exp.company}  
-Duration: ${exp.duration}  
-Description: ${exp.description}`).join('\n\n')}
-
-### Projects:
-${portfolioData.projects.map((proj, i) => 
-`${i + 1}) ${proj.title}  
-Tech Stack: ${proj.techStack.join(', ')}  
-Description: ${proj.description}  
-GitHub: ${proj.github} | Live Demo: ${proj.liveDemo}`).join('\n\n')}
-
-### Education:
-${portfolioData.education.map((edu, i) => 
-`${i + 1}) ${edu.degree}  
-Institution: ${edu.institution}  
-Duration: ${edu.duration}  
-Score: ${edu.score}`).join('\n\n')}
-
-### Skills:
-Languages: ${portfolioData.skills.languages.join(', ')}  
-Tools: ${portfolioData.skills.tools.join(', ')}
-
-### Certifications:
-${portfolioData.certifications.length ? portfolioData.certifications.map((cert, i) => 
-`${i + 1}) ${cert.title} - ${cert.year}  
-Provider: ${cert.provider}  
-Certificate: ${cert.certificateLink}`).join('\n\n') : 'None'}
-
----
-
 ### Design Requirements:
 
 **Color Scheme:**  
-- Use indigo/purple modern gradients (#4f46e5, #7c3aed, #9333ea)  
+- Use any modern gradient color combination in backgrounds.
+
 **Typography:**  
 - Clean, readable fonts  
 - Bold headings, medium subheadings, regular body text  
@@ -183,6 +142,48 @@ Certificate: ${cert.certificateLink}`).join('\n\n') : 'None'}
 
 ---
 
+### Personal Information:
+Name: ${portfolioData.name}  
+Email: ${portfolioData.email}  
+Phone: ${portfolioData.phone}  
+
+${portfolioData.profileImage ? `### Profile Image (Base64):\n${portfolioData.profileImage.substring(0, 100)}... (truncated)\n\nUse this image as the user's avatar or profile picture in the portfolio.\n` : ''}
+
+### Portfolio Links:
+${Object.entries(portfolioData.portfolioLinks).map(([key, value]) => `${key}: ${value}`).join(' | ')}
+
+### Work Experience:
+${portfolioData.workExperience.map((exp, i) => 
+`${i + 1}) ${exp.position} at ${exp.company}  
+Duration: ${exp.duration}  
+Description: ${exp.description}`).join('\n\n')}
+
+### Projects:
+${portfolioData.projects.map((proj, i) => 
+`${i + 1}) ${proj.title}  
+Tech Stack: ${proj.techStack.join(', ')}  
+Description: ${proj.description}  
+GitHub: ${proj.github} | Live Demo: ${proj.liveDemo}`).join('\n\n')}
+
+### Education:
+${portfolioData.education.map((edu, i) => 
+`${i + 1}) ${edu.degree}  
+Institution: ${edu.institution}  
+Duration: ${edu.duration}  
+Score: ${edu.score}`).join('\n\n')}
+
+### Skills:
+Languages: ${portfolioData.skills.languages.join(', ')}  
+Tools: ${portfolioData.skills.tools.join(', ')}
+
+### Certifications:
+${portfolioData.certifications.length ? portfolioData.certifications.map((cert, i) => 
+`${i + 1}) ${cert.title} - ${cert.year}  
+Provider: ${cert.provider}  
+Certificate: ${cert.certificateLink}`).join('\n\n') : 'None'}
+
+----
+
 ### Output Instructions:
 Return a **single code block** with a complete, production-ready portfolio website.  
 **Only output HTML, Tailwind CSS, and JavaScript** (no markdown or explanations).  
@@ -191,7 +192,7 @@ Ensure every section is styled as per the design specs and that no data is omitt
 
 `;
         const response = await axios.post(
-          '/api/completions',
+          `${import.meta.env.VITE_API_URL}/api/completions`,
           {
             model: 'deepseek/deepseek-r1:free',
             messages: [
@@ -207,7 +208,7 @@ Ensure every section is styled as per the design specs and that no data is omitt
           }
         );
         if (response.data && response.data.data) {
-          setPortfolioHtml(cleanGeneratedHtml(response.data.data));
+          setPortfolioHtml(response.data.data);
           hasGenerated.current = true;
         } else {
           throw new Error('Invalid response from API');
