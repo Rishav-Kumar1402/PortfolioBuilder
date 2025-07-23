@@ -78,142 +78,154 @@ function App() {
                     Portfolio Builder
                   </span>
                 </Link>
-                <div className="hidden md:flex items-center space-x-8">
-                  {isAuthenticated ? (
-                    <>
-                      <a href="#about" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                        About
-                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                      </a>
-                      <a href="#features" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                        Features
-                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                      </a>
-                      <a href="#reviews" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                        Reviews
-                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                      </a>
-                      <a href="#contact" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                        Contact
-                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                      </a>
-                      <button
-                        onClick={handleLogout}
-                        className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                      >
-                        Logout
-                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                      </button>
-                    </>
-                  ) : null}
+
+                {/* Always visible theme toggle */}
+                <div className="flex items-center space-x-4">
                   <button
                     onClick={toggleTheme}
                     className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-300' : 'bg-gray-200 text-gray-800'} hover:bg-opacity-80 transition-colors duration-200`}
                   >
                     {theme === 'dark' ? '🌙' : '☀️'}
                   </button>
-                </div>
-                    {/* Hamburger icon only if not on /login or /signup */}
-                    {!(location.pathname === '/login' || location.pathname === '/signup') && (
-                <div className="md:hidden">
-                  <button className="p-2" onClick={() => setShowMobileMenu((v) => !v)} aria-label="Open menu">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  </button>
-                  {/* Animated Side Drawer Mobile Menu */}
-                  <div
-                    className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${showMobileMenu ? 'visible opacity-100' : 'invisible opacity-0'}`}
-                    style={{ pointerEvents: showMobileMenu ? 'auto' : 'none' }}
-                  >
-                    {/* Drawer with Home page gradient background */}
-                    <div
-                      ref={mobileMenuRef}
-                      className={`absolute right-0 top-0 h-full w-64 max-w-full shadow-2xl flex flex-col py-8 px-6 transition-transform duration-300 ${showMobileMenu ? 'translate-x-0' : 'translate-x-full'} rounded-l-2xl bg-transparent`}
-                    >
-                      {/* Close button */}
-                      <button
-                        className={`absolute top-4 right-4 p-2 rounded-full transition-colors
-                          ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}
-                        onClick={() => setShowMobileMenu(false)}
-                        aria-label="Close menu"
+
+                  {/* Desktop navigation */}
+                  <div className="hidden md:flex items-center space-x-8">
+                    {isAuthenticated && (
+                      <>
+                        <a href="#about" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
+                          About
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </a>
+                        <a href="#features" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
+                          Features
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </a>
+                        <a href="#reviews" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
+                          Reviews
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </a>
+                        <a href="#contact" onClick={handleNavigation} className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
+                          Contact
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </a>
+                        <button
+                          onClick={handleLogout}
+                          className={`nav-link relative group ${theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                        >
+                          Logout
+                          <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+                        </button>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Mobile menu button */}
+                  {!(location.pathname === '/login' || location.pathname === '/signup') && (
+                    <div className="md:hidden">
+                      <button 
+                        className="p-2" 
+                        onClick={() => setShowMobileMenu((v) => !v)} 
+                        aria-label="Open menu"
                       >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                       </button>
-                      {/* Animated Links */}
-                      <div className="flex flex-col space-y-3 mt-8">
-                        {[
-                          { label: 'About', href: '#about' },
-                          { label: 'Features', href: '#features' },
-                          { label: 'Reviews', href: '#reviews' },
-                          { label: 'Contact', href: '#contact' },
-                        ].map((item, idx) => (
-                          <a
-                            key={item.href}
-                            href={item.href}
-                            onClick={e => { handleNavigation(e); setShowMobileMenu(false); }}
-                            className={`block px-4 py-3 rounded-lg text-lg font-medium w-full text-left shadow-sm transition-all duration-300
-                              ${theme === 'dark'
-                                ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
-                                : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
-                            `}
-                            style={{
-                              opacity: showMobileMenu ? 1 : 0,
-                              transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
-                              transitionDelay: showMobileMenu ? `${0.1 + idx * 0.07}s` : '0s',
-                            }}
-                          >
-                            {item.label}
-                          </a>
-                        ))}
-                        {isAuthenticated && (
-                          <button
-                            onClick={e => { handleLogout(); setShowMobileMenu(false); }}
-                            className={`block px-4 py-3 rounded-lg text-lg font-medium w-full text-left shadow-sm transition-all duration-300
-                              ${theme === 'dark'
-                                ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
-                                : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
-                            `}
-                            style={{
-                              opacity: showMobileMenu ? 1 : 0,
-                              transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
-                              transitionDelay: showMobileMenu ? `${0.38}s` : '0s',
-                            }}
-                          >
-                            Logout
-                          </button>
-                        )}
-                        {/* <div className="w-4/5 border-t border-gray-200 dark:border-gray-700 my-2 mx-auto"></div> */}
-                        <button
-                          onClick={() => { toggleTheme(); setShowMobileMenu(false); }}
-                          className={`flex items-center justify-start w-full px-4 py-3 rounded-lg text-lg font-medium shadow-sm transition-colors
-                            ${theme === 'dark'
-                              ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
-                              : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
-                          `}
-                          style={{
-                            opacity: showMobileMenu ? 1 : 0,
-                            transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
-                            transitionDelay: showMobileMenu ? `${isAuthenticated ? 0.45 : 0.38}s` : '0s',
-                          }}
-                        >
-                          {theme === 'dark' ? (
-                            <>
-                              <span className="mr-2">🌞</span> Light Mode
-                            </>
-                          ) : (
-                            <>
-                              <span className="mr-2">🌙</span> Dark Mode
-                            </>
-                          )}
-                        </button>
-                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
+              </div>
+            </div>
+            
+            {/* Mobile menu code (unchanged) */}
+            <div
+              className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${showMobileMenu ? 'visible opacity-100' : 'invisible opacity-0'}`}
+              style={{ pointerEvents: showMobileMenu ? 'auto' : 'none' }}
+            >
+              {/* Drawer with Home page gradient background */}
+              <div
+                ref={mobileMenuRef}
+                className={`absolute right-0 top-0 h-full w-64 max-w-full shadow-2xl flex flex-col py-8 px-6 transition-transform duration-300 ${showMobileMenu ? 'translate-x-0' : 'translate-x-full'} rounded-l-2xl bg-transparent`}
+              >
+                {/* Close button */}
+                <button
+                  className={`absolute top-4 right-4 p-2 rounded-full transition-colors
+                    ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}
+                  onClick={() => setShowMobileMenu(false)}
+                  aria-label="Close menu"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                {/* Animated Links */}
+                <div className="flex flex-col space-y-3 mt-8">
+                  {[
+                    { label: 'About', href: '#about' },
+                    { label: 'Features', href: '#features' },
+                    { label: 'Reviews', href: '#reviews' },
+                    { label: 'Contact', href: '#contact' },
+                  ].map((item, idx) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      onClick={e => { handleNavigation(e); setShowMobileMenu(false); }}
+                      className={`block px-4 py-3 rounded-lg text-lg font-medium w-full text-left shadow-sm transition-all duration-300
+                        ${theme === 'dark'
+                          ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
+                          : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
+                    `}
+                    style={{
+                      opacity: showMobileMenu ? 1 : 0,
+                      transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
+                      transitionDelay: showMobileMenu ? `${0.1 + idx * 0.07}s` : '0s',
+                    }}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                  {isAuthenticated && (
+                    <button
+                      onClick={e => { handleLogout(); setShowMobileMenu(false); }}
+                      className={`block px-4 py-3 rounded-lg text-lg font-medium w-full text-left shadow-sm transition-all duration-300
+                        ${theme === 'dark'
+                          ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
+                          : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
+                    `}
+                    style={{
+                      opacity: showMobileMenu ? 1 : 0,
+                      transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
+                      transitionDelay: showMobileMenu ? `${0.38}s` : '0s',
+                    }}
+                    >
+                      Logout
+                    </button>
+                  )}
+                  {/* <div className="w-4/5 border-t border-gray-200 dark:border-gray-700 my-2 mx-auto"></div> */}
+                  {/* <button
+                    onClick={() => { toggleTheme(); setShowMobileMenu(false); }}
+                    className={`flex items-center justify-start w-full px-4 py-3 rounded-lg text-lg font-medium shadow-sm transition-colors
+                      ${theme === 'dark'
+                        ? 'bg-gray-900 text-gray-100 hover:bg-gray-800 hover:text-white'
+                        : 'bg-white text-gray-800 hover:bg-gray-100 hover:text-blue-600'}
+                  `}
+                  style={{
+                    opacity: showMobileMenu ? 1 : 0,
+                    transform: showMobileMenu ? 'translateX(0)' : 'translateX(40px)',
+                    transitionDelay: showMobileMenu ? `${isAuthenticated ? 0.45 : 0.38}s` : '0s',
+                  }}
+                  >
+                    {theme === 'dark' ? (
+                      <>
+                        <span className="mr-2">🌞</span> Light Mode
+                      </>
+                    ) : (
+                      <>
+                        <span className="mr-2">🌙</span> Dark Mode
+                      </>
                     )}
+                  </button> */}
+                </div>
               </div>
             </div>
           </nav>
