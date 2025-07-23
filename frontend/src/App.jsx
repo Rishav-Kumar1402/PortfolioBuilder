@@ -81,12 +81,6 @@ function App() {
 
                 {/* Always visible theme toggle */}
                 <div className="flex items-center space-x-4">
-                  <button
-                    onClick={toggleTheme}
-                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-300' : 'bg-gray-200 text-gray-800'} hover:bg-opacity-80 transition-colors duration-200`}
-                  >
-                    {theme === 'dark' ? '🌙' : '☀️'}
-                  </button>
 
                   {/* Desktop navigation */}
                   <div className="hidden md:flex items-center space-x-8">
@@ -118,6 +112,13 @@ function App() {
                       </>
                     )}
                   </div>
+
+                   <button
+                    onClick={toggleTheme}
+                    className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800 text-yellow-300' : 'bg-gray-200 text-gray-800'} hover:bg-opacity-80 transition-colors duration-200`}
+                  >
+                    {theme === 'dark' ? '🌙' : '☀️'}
+                  </button>
 
                   {/* Mobile menu button */}
                   {!(location.pathname === '/login' || location.pathname === '/signup') && (
